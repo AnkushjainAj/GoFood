@@ -9,20 +9,41 @@ const port = process.env.PORT || 5000;
 mongoDB();
 
 // CORS Middleware
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Ensure this matches your frontend URL
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS"
-    );
+// app.use((req, res, next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Ensure this matches your frontend URL
+//     res.setHeader(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     res.setHeader(
+//         "Access-Control-Allow-Methods",
+//         "GET, POST, PUT, DELETE, OPTIONS"
+//     );
 
-    // Handle preflight requests
+//     // Handle preflight requests
+//     if (req.method === 'OPTIONS') {
+//         return res.sendStatus(200);
+//     }
+
+//     next();
+// });
+
+app.use((req, res, next) => {
+    // Allow all origins by setting the Access-Control-Allow-Origin header to *
+    res.setHeader("Access-Control-Allow-Origin", "*");
+
+    // Set the allowed headers for CORS
+    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    
+    // Set the allowed HTTP methods for CORS
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    
+    // Optional: Set this if you want to allow credentials (e.g., cookies)
+    // res.setHeader("Access-Control-Allow-Credentials", "true");
+
+    // Handle preflight requests for CORS
     if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
+        return res.status(200).end();
     }
 
     next();
